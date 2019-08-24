@@ -58,7 +58,7 @@ impl Doors {
                 5 => print!("[*]"),
                 6 => print!("[G]"),
                 7 => print!("[P]"),
-                _ => panic!("Unnown door state!")
+                _ => panic!("Unknown door state!")
             }
         }
         println!();
