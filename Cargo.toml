@@ -1,0 +1,8 @@
+[package]
+name = "rusty-hall"
+version = "0.1.0"
+authors = ["Arie Roos <arie@itecho.co.za>"]
+edition = "2018"
+
+[dependencies]
+rand = "0.7.0"
