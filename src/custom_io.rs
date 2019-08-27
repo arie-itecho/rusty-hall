@@ -7,7 +7,7 @@ where
     <T as FromStr>::Err: Display,
 {
     let mut input: Option<T> = None;
-    while input.is_none() || !accept.contains(input.as_ref().unwrap()) {
+    while input.is_none() || (accept.len() > 0 && !accept.contains(input.as_ref().unwrap())) {
         println!("{}", prompt);
 
         let mut in_str = String::new();
