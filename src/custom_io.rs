@@ -1,7 +1,8 @@
 use std::fmt::Display;
-use std::io;
-use std::str::FromStr;
+use std::io::{self, Write};
 
+use std::str::FromStr;
+use std::{thread, time};
 pub fn read_input<T: FromStr + PartialEq>(prompt: &str, accept: &[T]) -> T
 where
     <T as FromStr>::Err: Display,
@@ -36,14 +37,17 @@ pub fn read_str(prompt: &str, accept: &[&str]) -> String {
     read_input(prompt, &accept)
 }
 
-pub fn read_yes_no(prompt: &str, default: bool) -> bool {
+pub fn read_yes_no(prompt: &str, default: Option<bool>) -> bool {
     loop {
         let response = read_str(prompt, &[]);
 
         let first_char = match response.chars().next() {
             Some(c) => c,
             None => {
-                return default;
+                match default {
+                    Some(d) => return d,
+                    None => ' '
+                }
             }
         };
 
@@ -56,4 +60,19 @@ pub fn read_yes_no(prompt: &str, default: bool) -> bool {
             }
         };
     }
+}
+
+pub fn build_suspense(message: &str, seconds: u64) {
+    let flush = || io::stdout().flush().unwrap_or_default();
+
+    print!("{}", message);
+    flush();
+
+    for _ in 0..seconds {
+        print!(".");
+        flush();
+        thread::sleep(time::Duration::from_secs(1));
+    }
+
+    println!("!");
 }

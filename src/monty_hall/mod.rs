@@ -20,6 +20,33 @@ pub fn play_game() {
     doors.choose_door(choice);
     println!("You picked door number {}.", choice);
     doors.print();
+
+    custom_io::build_suspense("Now let me open another door", 3);
+    doors.open_door();
+    doors.print();
+
+    let switch = custom_io::read_yes_no("Do you want to switch?", None);
+    if switch {
+        doors.switch();
+    }
+    doors.print();
+
+    custom_io::build_suspense("Let's see if you won", 3);
+    let won = doors.resolve();
+    doors.print();
+
+    if won && switch {
+        println!("YOU WON! Well done for understanding probabilities ;)");
+    }
+    if won && !switch {
+        println!("YOU WON! You may be stubborn, but at least you are lucky!");
+    }
+    if !won && switch {
+        println!("You lost. Bad luck :(");
+    }
+    if !won && !switch {
+        println!("You lost. You should've switched.");
+    }
 }
 
 // Door states
@@ -55,7 +82,7 @@ impl Doors {
     fn set_winner(&mut self) -> usize {
         self.clean(WINNER);
 
-        let winner: usize = thread_rng().gen_range(0, 3);
+        let winner: usize = thread_rng().gen_range(0, self.doors.len());
         self.doors[winner] |= WINNER;
         winner + 1
     }
@@ -65,6 +92,45 @@ impl Doors {
 
         let i = choice - 1;
         self.doors[i] |= CHOSEN;
+    }
+
+    fn open_door(&mut self) {
+        self.clean(OPEN);
+
+        let mut choices: Vec<usize> = Vec::new();
+        for (i, door) in self.doors.iter().enumerate() {
+            if door & (CHOSEN + WINNER) == 0 {
+                choices.push(i);
+            }
+        }
+
+        let chosen: usize = choices[thread_rng().gen_range(0, choices.len())];
+        self.doors[chosen] |= OPEN;
+    }
+
+    fn switch(&mut self) {
+        let mut new_choice = self.doors.len();
+        for (i, door) in self.doors.iter().enumerate() {
+            if door & OPEN + CHOSEN == 0 {
+                new_choice = i;
+                break;
+            }
+        }
+        self.clean(CHOSEN);
+        self.doors[new_choice] |= CHOSEN;
+    }
+
+    fn resolve(&mut self) -> bool {
+        let mut won = false;
+        for (i, door) in self.doors.clone().iter().enumerate() {
+            if door & OPEN == 0 {
+                self.doors[i] |= OPEN;
+                if self.doors[i] == OPEN + CHOSEN + WINNER {
+                    won = true
+                }
+            }
+        }
+        return won;
     }
 
     fn print(&self) {
