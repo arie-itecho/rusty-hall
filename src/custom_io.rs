@@ -30,3 +30,30 @@ where
 
     input.unwrap()
 }
+
+pub fn read_str(prompt: &str, accept: &[&str]) -> String {
+    let accept: Vec<String> = accept.iter().map(|s| String::from(*s)).collect();
+    read_input(prompt, &accept)
+}
+
+pub fn read_yes_no(prompt: &str, default: bool) -> bool {
+    loop {
+        let response = read_str(prompt, &[]);
+
+        let first_char = match response.chars().next() {
+            Some(c) => c,
+            None => {
+                return default;
+            }
+        };
+
+        if let Some(i) = first_char.to_lowercase().next() {
+            if i == 'y' {
+                return true;
+            }
+            if i == 'n' {
+                return false;
+            }
+        };
+    }
+}
