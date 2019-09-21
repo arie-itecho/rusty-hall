@@ -3,6 +3,7 @@ mod monty_hall;
 
 fn main() {
     println!("Welcome to Monty Hall! It looks a little rusty here...");
+    let mut counter : monty_hall::Counter = Default::default();
 
     loop {
         let menu = format!(
@@ -16,9 +17,9 @@ fn main() {
 
         let response = custom_io::read_str(&menu, &["p", "m", "s", "q"]);
         match &response[..] {
-            "p" => monty_hall::play_game(),
+            "p" => monty_hall::play_game(&mut counter),
             "m" => continue, // TODO: Simulate many games
-            "s" => continue, // TODO: Print Stats
+            "s" => counter.print(),
             "q" => break,
             _ => continue,
         }

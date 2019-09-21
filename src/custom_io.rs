@@ -74,5 +74,5 @@ pub fn build_suspense(message: &str, seconds: u64) {
         thread::sleep(time::Duration::from_secs(1));
     }
 
-    println!("!");
+    println!(".");
 }

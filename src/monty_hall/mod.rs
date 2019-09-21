@@ -12,6 +12,10 @@ pub struct Counter {
 impl Counter {
     pub fn print(&self) {
         let total = self.switch + self.stay;
+        if total == 0 {
+            println!("No games played yet...");
+            return;
+        }
         let switch_percentage = (self.switch / total) * 100;
         let stay_percentage = (self.stay / total) * 100;
 
@@ -21,7 +25,7 @@ impl Counter {
     }
 }
 
-pub fn play_game() {
+pub fn play_game(counter: &mut Counter) {
     let mut doors = Doors::new();
     doors.set_winner();
 
@@ -50,14 +54,18 @@ pub fn play_game() {
 
     if won && switch {
         println!("YOU WON! Well done for understanding probabilities ;)");
+        counter.switch += 1;
     }
     if won && !switch {
         println!("YOU WON! You may be stubborn, but at least you are lucky!");
+        counter.stay += 1;
     }
     if !won && switch {
         println!("You lost. Bad luck :(");
+        counter.stay += 1;
     }
     if !won && !switch {
         println!("You lost. You should've switched.");
+        counter.switch += 1;
     }
 }
