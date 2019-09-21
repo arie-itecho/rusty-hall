@@ -3,6 +3,7 @@ use std::io::{self, Write};
 
 use std::str::FromStr;
 use std::{thread, time};
+
 pub fn read_input<T: FromStr + PartialEq>(prompt: &str, accept: &[T]) -> T
 where
     <T as FromStr>::Err: Display,
@@ -62,7 +63,11 @@ pub fn read_yes_no(prompt: &str, default: Option<bool>) -> bool {
     }
 }
 
-pub fn build_suspense(message: &str, seconds: u64) {
+pub fn wait_any_key() {
+    read_str("Press any key", &[]);
+}
+
+pub fn build_suspense(message: &str, seconds: u8) {
     let flush = || io::stdout().flush().unwrap_or_default();
 
     print!("{}", message);
@@ -75,4 +80,13 @@ pub fn build_suspense(message: &str, seconds: u64) {
     }
 
     println!(".");
+}
+
+pub fn seperator(start: char, line: char, width: u32, end: char)
+{
+    print!("{}", start);
+    for _ in 0..width {
+        print!("{}", line);
+    }
+    println!("{}", end);
 }
