@@ -16,8 +16,8 @@ impl Counter {
             println!("No games played yet...");
             return;
         }
-        let switch_percentage = (self.switch / total) * 100;
-        let stay_percentage = (self.stay / total) * 100;
+        let switch_percentage = (self.switch as f64 / total as f64) * 100.0;
+        let stay_percentage = (self.stay as f64 / total as f64) * 100.0;
 
         println!("Total games: {}", total);
         println!("It was the chosen door {} times. ({}%)", self.stay, stay_percentage);
