@@ -42,7 +42,7 @@ pub fn play_game(counter: &mut Counter) {
     doors.open_door();
     doors.print();
 
-    let switch = custom_io::read_yes_no("Do you want to switch?", None);
+    let switch = custom_io::read_yes_no("Do you want to switch? (y/n)", None);
     if switch {
         doors.switch();
     }

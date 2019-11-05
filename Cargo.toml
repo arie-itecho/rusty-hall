@@ -6,3 +6,4 @@ edition = "2018"
 
 [dependencies]
 rand = "0.7.0"
+ansi-escapes = "0.1.0"

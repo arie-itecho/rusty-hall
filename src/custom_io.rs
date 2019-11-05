@@ -1,8 +1,9 @@
 use std::fmt::Display;
 use std::io::{self, Write};
-
 use std::str::FromStr;
 use std::{thread, time};
+
+use ansi_escapes;
 
 pub fn read_input<T: FromStr + PartialEq>(prompt: &str, accept: &[T]) -> T
 where
@@ -65,6 +66,7 @@ pub fn read_yes_no(prompt: &str, default: Option<bool>) -> bool {
 
 pub fn wait_any_key() {
     read_str("Press any key", &[]);
+    print!("{}", ansi_escapes::CursorPrevLine);
 }
 
 pub fn build_suspense(message: &str, seconds: u8) {
