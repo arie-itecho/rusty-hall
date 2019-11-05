@@ -23,7 +23,7 @@ fn main() {
                 monty_hall::play_game(&mut counter);
                 played = true;
             }
-            "m" => continue, // TODO: Simulate many games
+            "m" => counter = monty_hall::simulate(counter),
             "s" => counter.print(),
             "q" => break,
             _ => continue,

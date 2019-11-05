@@ -69,6 +69,17 @@ pub fn wait_any_key() {
     print!("{}", ansi_escapes::CursorPrevLine);
 }
 
+pub fn read_validated_int<F>(prompt: &str, test: F) -> i64
+where F: Fn(i64) -> bool
+{
+    loop {
+        let input: i64 = read_input(prompt, &[]);
+        if test(input) {
+            return input;
+        }
+    }
+}
+
 pub fn build_suspense(message: &str, seconds: u8) {
     let flush = || io::stdout().flush().unwrap_or_default();
 

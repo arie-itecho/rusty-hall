@@ -45,7 +45,7 @@ impl Doors {
         self.doors[i] |= CHOSEN;
     }
 
-    pub fn open_door(&mut self) {
+    pub fn open_door(&mut self) -> usize {
         self.clean(OPEN);
 
         let mut choices: Vec<usize> = Vec::new();
@@ -57,6 +57,8 @@ impl Doors {
 
         let chosen: usize = choices[thread_rng().gen_range(0, choices.len())];
         self.doors[chosen] |= OPEN;
+
+        return chosen + 1;
     }
 
     pub fn switch(&mut self) {
